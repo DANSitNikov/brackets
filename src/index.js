@@ -9,14 +9,21 @@ module.exports = function check(str, bracketsConfig) {
     }
 
     function checkBrackets(str, arr, newArr) {
-        let newStr = str.match(/.{1,2}/gi);
-        for (let i = 0; i < newStr.length; i++) {
-            if (arr.includes(newStr[i])) {
-                return true;
+        for (let i = 0; i < str.length; i++) {
+            for (let j = 0; j < str.length; j++) {
+                let check = str[i] + str[i + 1]
+                if (arr[j] === check) {
+                    newArr.push(arr[j]);
+                    str = str.split('')
+                    str.splice(i, 2);
+                    str = str.join('')
+                    return checkBrackets(str, arr, newArr);
+                }
             }
         }
+        return newArr;
     }
 
     let a = checkBrackets(str, arr, newArr);
-    return a;
+    return a.join('').length === strLength;
 }
