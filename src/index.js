@@ -1,23 +1,22 @@
 module.exports = function check(str, bracketsConfig) {
-    if (typeof str !== 'string' || typeof bracketsConfig !== 'object') {
-        return false;
-    }
-    let strRes = [],
-        arrRes = [];
-    for (let i = 0; i < str.length; i++) {
-        if (str[i].match(/\]|\[|\{|\}|\||\(|\)/)) {
-            strRes.push(str[i])
-        }
-    }
-    bracketsConfig = bracketsConfig.flat();
+    const strLength = str.length;
+    let arr = [],
+        newArr = [];
+
     for (let i = 0; i < bracketsConfig.length; i++) {
-        if (bracketsConfig[i].match(/\]|\[|\{|\}|\||\(|\)/)) {
-            arrRes.push(bracketsConfig[i]);
+        let a = `${bracketsConfig[i][0]}${bracketsConfig[i][1]}`;
+        arr.push(a);
+    }
+
+    function checkBrackets(str, arr, newArr) {
+        let newStr = str.match(/.{1,2}/gi);
+        for (let i = 0; i < newStr.length; i++) {
+            if (arr.includes(newStr[i])) {
+                return true;
+            }
         }
     }
-    if (strRes.length % 2 === 0 && arrRes.length % 2 === 0) {
-        return true;
-    } else {
-        return false;
-    }
+
+    let a = checkBrackets(str, arr, newArr);
+    return a;
 }
